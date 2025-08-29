@@ -145,7 +145,7 @@ const getAgencyForCar = db.prepare(`
   SELECT ag.name AS agency_name, ag.phone AS agency_phone
   FROM cars c
   JOIN agencies ag ON ag.id = c.agency_id
-  WHERE c.id = ?
+  LEFT JOIN availability a ON a.car_id = c.id
 `);
 
 const selectBookingsForAgency = db.prepare(`
@@ -154,6 +154,13 @@ const selectBookingsForAgency = db.prepare(`
   JOIN cars c ON c.id = b.car_id
   WHERE c.agency_id = ?
   ORDER BY b.created_at DESC
+`);
+
+const selectCarWithAgency = db.prepare(`
+  SELECT c.*, ag.name AS agency_name, ag.phone AS agency_phone
+  FROM cars c
+  JOIN agencies ag ON ag.id = c.agency_id
+  WHERE c.id = ?
 `);
 
 // ----------------- Routes -----------------
