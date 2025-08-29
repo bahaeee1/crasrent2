@@ -300,8 +300,15 @@ app.post('/api/bookings', (req, res) => {
   const total_price = days * car.daily_price;
 
   const info = insertBooking.run(car_id, start_date, end_date, total_price, customer_name, customer_email, customer_phone || null);
-  res.status(201).json({ id: info.lastInsertRowid, total_price, status: 'pending' });
+  const { agency_name, agency_phone } = getAgencyForCar.get(car_id);
+res.status(201).json({
+  id: info.lastInsertRowid,
+  total_price,
+  status: 'pending',
+  agency_name,
+  agency_phone
 });
+
 
 // Agency bookings (auth)
 app.get('/api/agency/me/bookings', auth, (req, res) => {
