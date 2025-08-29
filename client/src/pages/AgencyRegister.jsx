@@ -7,18 +7,20 @@ export default function AgencyRegister() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [location, setLocation] = useState('')
+  const [phone, setPhone] = useState('')            // NEW
   const [err, setErr] = useState(null)
   const nav = useNavigate()
 
   const onSubmit = async () => {
     setErr(null)
     try {
-      const res = await registerAgency({ name, email, password, location })
+      const res = await registerAgency({ name, email, password, location, phone }) // NEW
       localStorage.setItem('token', res.token)
       localStorage.setItem('agency', JSON.stringify(res.agency))
       nav('/agency/dashboard')
     } catch (e) {
-      setErr(e.error || 'Register failed')
+      // Better error text (no more [object Object])
+      setErr(typeof e === 'string' ? e : e.error?.message || JSON.stringify(e))
     }
   }
 
@@ -33,9 +35,11 @@ export default function AgencyRegister() {
         <div className="col-6"><label>Email</label><input value={email} onChange={e=>setEmail(e.target.value)} /></div>
         <div className="col-6"><label>Password</label><input type="password" value={password} onChange={e=>setPassword(e.target.value)} /></div>
       </div>
-      <div style={{marginTop:12}}>
-        <button className="btn" onClick={onSubmit}>Create account</button>
+      <div className="row">
+        <div className="col-6"><label>Phone</label><input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+212..." /></div>
+        <div className="col-6"></div>
       </div>
+      <div style={{marginTop:12}}><button className="btn" onClick={onSubmit}>Create account</button></div>
       {err && <div className="error" style={{marginTop:8}}>{String(err)}</div>}
     </div>
   )
