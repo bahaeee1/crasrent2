@@ -57,6 +57,8 @@ export default function Search() {
             <img src={c.image_url || 'https://picsum.photos/seed/'+c.id+'/600/400'} alt={c.title} />
             <div className="body">
               <div style={{fontWeight:700}}>{c.title}</div>
+              <div className="muted">Agency: <b>{c.agency_name || '—'}</b></div>
+              <div className="muted">Tel: <b>{c.agency_phone || '—'}</b></div>
               <div className="muted">{c.brand || ''} {c.model || ''}</div>
               <div style={{margin:'6px 0'}}><b>{c.daily_price} / day</b> · {c.location}</div>
               <button className="btn" onClick={()=>nav('/car/'+c.id)}>View</button>
