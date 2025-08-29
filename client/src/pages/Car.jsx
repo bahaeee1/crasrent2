@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getAvailability, searchCars, createBooking } from '../api.js'
+import { getAvailability, getCar, createBooking } from '../api.js'
 
 export default function Car() {
   const { id } = useParams()
@@ -15,20 +16,19 @@ export default function Car() {
   const [err, setErr] = useState(null)
 
   useEffect(() => {
-    // We don't have a single-car endpoint; fetch via search without filters (not ideal, but MVP workaround)
-    (async () => {
-      try {
-        const all = await searchCars({})
-        const found = all.find(x => String(x.id) === String(id))
-        setCar(found || null)
-      } catch {}
-      try {
-        const a = await getAvailability(id)
-        setAvail(a)
-      } catch {}
-    })()
-  }, [id])
+  (async () => {
+    try { setCar(await getCar(id)) } catch {}
+    try { setAvail(await getAvailability(id)) } catch {}
+  })()
+}, [id])
 
+<h3>Agency contact</h3>
+<p>
+  <b>{car.agency_name || 'Agency'}</b><br/>
+  Tel: <a href={`tel:${car.agency_phone || ''}`}>{car.agency_phone || '—'}</a>
+</p>
+
+  
   const book = async () => {
     setErr(null); setMsg(null)
     try {
