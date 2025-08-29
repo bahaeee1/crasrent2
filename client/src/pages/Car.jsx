@@ -33,7 +33,11 @@ export default function Car() {
     setErr(null); setMsg(null)
     try {
       const res = await createBooking({ car_id: Number(id), start_date: startDate, end_date: endDate, customer_name, customer_email, customer_phone })
-      setMsg(`Booking created. Total price: ${res.total_price}. Status: ${res.status}.`)
+      setMsg(
+  `Booking created. Contact ${res.agency_name || 'the agency'} at ${res.agency_phone || 'N/A'}.
+Total price: ${res.total_price}. Status: ${res.status}.`
+)
+
     } catch (e) {
       setErr(e.error ? JSON.stringify(e.error) : 'Booking failed')
     }
