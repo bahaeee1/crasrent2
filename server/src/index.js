@@ -141,6 +141,13 @@ const insertBooking = db.prepare(`
   VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')
 `);
 
+const getAgencyForCar = db.prepare(`
+  SELECT ag.name AS agency_name, ag.phone AS agency_phone
+  FROM cars c
+  JOIN agencies ag ON ag.id = c.agency_id
+  WHERE c.id = ?
+`);
+
 const selectBookingsForAgency = db.prepare(`
   SELECT b.*, c.title AS car_title
   FROM bookings b
