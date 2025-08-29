@@ -75,3 +75,9 @@ export async function myBookings() {
   if (!res.ok) throw await res.json();
   return res.json();
 }
+
+export async function getCar(id) {
+  const r = await fetch((import.meta.env.VITE_API_BASE || 'http://localhost:4000') + `/api/cars/${id}`);
+  if (!r.ok) throw await r.json();
+  return r.json();
+}
